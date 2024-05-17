@@ -1,0 +1,1304 @@
+--test
+
+
+--main
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "Xscrobic Prime", HidePremium = false, SaveConfig = true, ConfigFolder = "Prime", IntroEnabled = false, IntroText = "sxxx"})
+local frame = script.Parent
+local player = game.Players.LocalPlayer
+local LocalPlayer = game.Players.LocalPlayer
+local space = "                                                                                                              "
+local Tab = Window:MakeTab({Name = "Info",Icon = "rbxassetid://6034452656",PremiumOnly = false
+})
+
+local CoolParagraph = Tab:AddParagraph("Status")
+if game:GetService("ReplicatedStorage").Values.Difficulty.Value == 0 then 
+    CoolParagraph:Set(
+    "Difficulty: Easy"..space.."Health: 67%"..space.."Damage: 50%"..space.."Speed: 90%"..space.."ZombieLevel: 1"..space.."XPMultiplier: 75%"..space.."ModChance: 75%"..space.."NightSpeed: 140%"
+    )
+elseif game:GetService("ReplicatedStorage").Values.Difficulty.Value == 1 then 
+    local CoolParagraph = Tab:AddParagraph("Status")
+    CoolParagraph:Set(
+    "Difficulty: Normal"..space.."Health: 100%"..space.."Damage: 100%"..space.."Speed: 100%"..space.."ZombieLevel: 1"..space.."XPMultiplier: 100%"..space.."ModChance: 100%"..space.."NightSpeed: 140%"
+    )
+
+elseif game:GetService("ReplicatedStorage").Values.Difficulty.Value == 2 then 
+    CoolParagraph:Set(
+    "Difficulty: Hard"..space.."Health: 150%"..space.."Damage: 100%"..space.."Speed: 100%"..space.."ZombieLevel: 2"..space.."XPMultiplier: 125%"..space.."ModChance: 125%"..space.."NightSpeed: 120%"
+    )
+elseif game:GetService("ReplicatedStorage").Values.Difficulty.Value == 3 then 
+    CoolParagraph:Set(
+    "Difficulty: Nightmare"..space.."Health: 200%"..space.."Damage: 150%"..space.."Speed: 110%"..space.."ZombieLevel: 3"..space.."XPMultiplier: 160%"..space.."ModChance: 160%"..space.."NightSpeed: 100%"
+    )
+    
+elseif game:GetService("ReplicatedStorage").Values.Difficulty.Value == 4 then 
+    CoolParagraph:Set(
+    "Difficulty: Impossible"..space.."Health: 250%"..space.."Damage: 200%"..space.."Speed: 125%"..space.."ZombieLevel: 4"..space.."XPMultiplier: 200%"..space.."ModChance: 200%"..space.."NightSpeed: 100%"
+    )
+
+elseif game:GetService("ReplicatedStorage").Values.Difficulty.Value == 5 then 
+    CoolParagraph:Set(
+        "Difficulty: Career Mode"..space.."Save Progress: Yes"..space.."GameSpeed: 200%"..space.."Price:100-800%"..space.."Mod Drops:-40%"..space.."Donations: Disabled"..space.."Limited Perks: Yes" 
+        )
+elseif game:GetService("ReplicatedStorage").Values.Difficulty.Value == 6 then 
+    CoolParagraph:Set(
+        "Difficulty: Mutation"
+        )
+end
+
+
+
+
+game:GetService("Players").LocalPlayer.Idled:connect(function()
+    vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    wait(1)
+    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+end)
+
+
+local frames = game.ReplicatedStorage.Values.ShopHealth.Value
+game:GetService "RunService".RenderStepped:Connect(function()
+    frames = game.ReplicatedStorage.Values.ShopHealth.Value
+end)
+
+local CoolParagraph = Tab:AddParagraph("Shop Health")
+CoolParagraph:Set(
+"FPS: "
+)
+
+task.spawn(function()
+	while task.wait(1) do		
+
+	CoolParagraph:Set(
+	frames
+	)
+
+		frames = game.ReplicatedStorage.Values.ShopHealth.Value
+	end
+end)
+
+Tab:AddButton({Name = "Copy Code PrivateServer",Callback = function()
+    setclipboard(game.ReplicatedStorage.Values.ServerCode.Value)
+end    
+})
+
+
+
+
+
+local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",PremiumOnly = false
+})
+
+
+    local Section = Tab:AddSection({
+        Name = "Aura Toggles"
+    })
+
+    local localPlayer = game:GetService("Players").LocalPlayer
+
+    local function getClosest()
+        local closestPlayer = nil
+        local shortestDistance = math.huge
+        
+        for i, v in pairs(game:GetService("Workspace").Zombies:GetChildren()) do
+            if v:FindFirstChild("Zombie") and v.Zombie.Health ~= 0 and v:FindFirstChild("Torso") and v:FindFirstChild("Head") then
+                local magnitude = (v.Torso.Position - localPlayer.Character.Torso.Position).magnitude
+    
+                if magnitude < shortestDistance then
+                    closestPlayer = v
+                    shortestDistance = magnitude
+                end
+            end
+        end
+    
+        return closestPlayer
+    end
+
+    Tab:AddToggle({Name = "Knife Aura",Default = false,Callback = function(v)
+        if v == true then
+
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+				local args = {
+					[1] = "Melee",
+					[2] = {
+						[1] = {
+							[1] = getClosest():FindFirstChild("Head"),
+							[2] = {}
+						}
+					}
+				}
+
+				game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+    })
+
+    Tab:AddToggle({Name = "Bat Aura",Default = false,Callback = function(v)
+        if v == true then
+
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+                spawn(function()
+                    local args = {
+                        [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Baseball Bat"),
+                        [2] = {
+                            [1] = {
+                                [1] = getClosest():FindFirstChild("Head"),
+                                [2] = {
+                                    ["Critical"] = true,
+                                    ["OverDamage"] = true,
+                                    ["ActiveAnimation"] = "Over"
+                                }
+                            }
+                        },
+                        [3] = {
+                            ["ActiveAnimation"] = "Over"
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
+                    end)
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+    })
+
+    Tab:AddToggle({Name = "Mil Axe Aura",Default = false,Callback = function(v)
+        if v == true then
+
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+                spawn(function()
+                    local args = {
+                        [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Military Axe"),
+                        [2] = {
+                            [1] = {
+                                [1] = getClosest():FindFirstChild("Head"),
+                                [2] = {
+                                    ["Critical"] = true,
+                                    ["OverDamage"] = true,
+                                    ["ActiveAnimation"] = "Over"
+                                }
+                            }
+                        },
+                        [3] = {
+                            ["ActiveAnimation"] = "Over"
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
+                    end)
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+    })
+
+    Tab:AddToggle({Name = "Katana Aura",Default = false,Callback = function(v)
+        if v == true then
+
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+                spawn(function()
+                    local args = {
+                        [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Katana"),
+                        [2] = {
+                            [1] = {
+                                [1] = getClosest():FindFirstChild("Head"),
+                                [2] = {
+                                    ["Critical"] = true,
+                                    ["OverDamage"] = true,
+                                    ["ActiveAnimation"] = "Over"
+                                }
+                            }
+                        },
+                        [3] = {
+                            ["ActiveAnimation"] = "Over"
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
+                    end)
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+    })
+
+    Tab:AddToggle({Name = "EnergySword Aura",Default = false,Callback = function(v)
+        if v == true then
+
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+                spawn(function()
+                    local args = {
+                        [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Energy Sword"),
+                        [2] = {
+                            [1] = {
+                                [1] = getClosest():FindFirstChild("Head"),
+                                [2] = {
+                                    ["Critical"] = true,
+                                    ["ActiveAnimation"] = "Right",
+                                    ["AltDamage"] = true
+                                }
+                            }
+                        },
+                        [3] = {
+                            ["ActiveAnimation"] = "Right"
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
+                    end)
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+})
+
+
+
+local Tab = Window:MakeTab({Name = "Main Setting",Icon = "rbxassetid://",PremiumOnly = false
+ })
+
+    local Section = Tab:AddSection({
+        Name = "Main Toggles"
+    })
+
+
+    Tab:AddToggle({Name = "Auto Vote",Default = false,Callback = function(v)
+        if v == true then
+
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+                game:GetService("ReplicatedStorage").RemoteFunctions.VoteSkip:InvokeServer()
+
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+    })
+    Tab:AddToggle({Name = "Auto RefillArmour",Default = false,Callback = function(v)
+        if v == true then
+
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+                wait(0.4)
+                local args = {
+                    [1] = "Armour"
+                }
+                
+                game:GetService("ReplicatedStorage").RemoteEvents.SellRepair:FireServer(unpack(args))
+                
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+    })
+
+
+    Tab:AddToggle({Name = "Auto RefillAmmo",Default = false,Callback = function(v)
+        if v == true then
+
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+                wait(0.4)
+				local args = {
+					[1] = "AmmoBox"
+				}
+				
+				game:GetService("ReplicatedStorage").RemoteEvents.SellRepair:FireServer(unpack(args))
+
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+    })
+
+    Tab:AddToggle({Name = "AutoRepair Baricade",Default = false,Callback = function(v)
+        if v == true then
+
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+                wait(0.4)
+                local args = {
+                    [1] = "Barricade"
+                }
+    
+                game:GetService("ReplicatedStorage").RemoteEvents.SellRepair:FireServer(unpack(args))
+
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+    })
+
+    local Section = Tab:AddSection({
+        Name = "Main Toggles"
+    })
+
+    Tab:AddToggle({Name = "No Vote Kick",Default = false,Callback = function(v)
+        if v == true then
+
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+                local success, err = pcall(function()
+                    game:GetService("ReplicatedStorage").RemoteEvents.VoteKickNo:FireServer()
+                end)
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+    })
+
+    Tab:AddToggle({Name = "Walkspeed Increase",Default = false,Callback = function(v)
+        if v == true then
+    
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+                local success, err = pcall(function()
+                    game.Players.LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid').Name = 'Humanoid'
+                    game.Players.LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid').WalkSpeed = 21.5
+    
+                end)
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+    })
+    
+
+
+
+
+
+
+
+
+
+local Tab = Window:MakeTab({Name = "Autoup Toggles",Icon = "rbxassetid://",PremiumOnly = false
+})
+
+    local Section = Tab:AddSection({
+        Name = "Armour"
+    })
+    Tab:AddButton({Name = "Buy Armour",Callback = function()
+        local args = {
+            [1] = game:GetService("ReplicatedStorage").Upgrades.Armour,
+            [2] = game:GetService("Players").LocalPlayer.Upgrades.PlayerUpgrades.Armour.UPurchased
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.BuyPlayerUpgrade:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Absorption",Callback = function()
+        local args = {
+            [1] = "Armour",
+            [2] = "Absorption"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "ArmourDurability",Callback = function()
+        local args = {
+            [1] = "Armour",
+            [2] = "ArmourDurability"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+
+
+
+
+
+
+
+    local Section = Tab:AddSection({
+        Name = "Base"
+    })
+
+    Tab:AddButton({Name = "FloodLights",Callback = function()
+        local args = {
+            [1] = "Shop",
+            [2] = "FloodLights"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "BarbedWire",Callback = function()
+        local args = {
+            [1] = "Shop",
+            [2] = "BarbedWire"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Builders",Callback = function()
+        local args = {
+            [1] = "Shop",
+            [2] = "HealthRepair"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Invest Money",Callback = function()
+        local args = {
+            [1] = "Shop",
+            [2] = "MoneyUpgrade"
+        }
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "FortiyShop",Callback = function()
+        local args = {
+            [1] = "Shop",
+            [2] = "HealthUpgrade"
+        }
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args)) 
+    end    
+    })
+
+
+
+
+
+
+    local Section = Tab:AddSection({
+        Name = "Ammobox"
+    })
+
+    Tab:AddButton({Name = "AmmoQuality",Callback = function()
+        local args = {
+            [1] = "AmmoBox",
+            [2] = "AmmoDamage"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "AutoRefill",Callback = function()
+        local args = {
+            [1] = "AmmoBox",
+            [2] = "AmmoRepair"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "SpeedHands",Callback = function()
+        local args = {
+            [1] = "AmmoBox",
+            [2] = "AmmoSpeed"
+        }
+
+    game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "AmmoCapacity",Callback = function()
+        local args = {
+            [1] = "AmmoBox",
+            [2] = "AmmoUpgrade"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+
+
+
+    local Section = Tab:AddSection({
+        Name = "Rooftop"
+    })
+    Tab:AddButton({Name = "Buy RoofTop",Callback = function()
+        local args = {
+            [1] = game:GetService("ReplicatedStorage").Upgrades.Ladders,
+            [2] = game:GetService("ReplicatedStorage").Upgrades.Ladders.UPurchased
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.BuyStructure:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Ladders",Callback = function()
+        local args = {
+            [1] = "Ladders",
+            [2] = "Ladders"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "LaserUpgrade",Callback = function()
+        local args = {
+            [1] = "Ladders",
+            [2] = "LaserUpgradeStation"
+        }
+
+    game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+
+    end    
+    })
+    Tab:AddButton({Name = "Extra Ammobox",Callback = function()
+        local args = {
+            [1] = "Ladders",
+            [2] = "RoofAmmo"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Premium Ammo",Callback = function()
+        local args = {
+            [1] = "Ladders",
+            [2] = "RoofAmmoPremium"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+
+
+
+
+
+    local Section = Tab:AddSection({
+        Name = "Sniper"
+    })
+    Tab:AddButton({Name = "Buy Sniper",Callback = function()
+        local args = {
+            [1] = game:GetService("ReplicatedStorage").Upgrades.Sniper,
+            [2] = game:GetService("ReplicatedStorage").Upgrades.Sniper.UPurchased
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.BuyStructure:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "AP Rounds",Callback = function()
+        local args = {
+            [1] = "Sniper",
+            [2] = "Damage"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "GreasedTrigger",Callback = function()
+        local args = {
+            [1] = "Sniper",
+            [2] = "ExtraAttackSpeed"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "DeepMags",Callback = function()
+        local args = {
+            [1] = "Sniper",
+            [2] = "ExtraMaxClip"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "DoubleTrouble",Callback = function()
+        local args = {
+            [1] = "Sniper",
+            [2] = "ExtraSniper"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "NightVision",Callback = function()
+        local args = {
+            [1] = "Sniper",
+            [2] = "NightVision"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "MagnifiedScope",Callback = function()
+        local args = {
+            [1] = "Sniper",
+            [2] = "Range"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Avengment",Callback = function()
+        local args = {
+            [1] = "Sniper",
+            [2] = "SniperRevenge"
+        }
+
+    game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "WitherRounds",Callback = function()
+        local args = {
+            [1] = "Sniper",
+            [2] = "WitherDamage"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+
+
+
+
+
+
+
+
+
+
+    local Section = Tab:AddSection({
+        Name = "Wall"
+    })
+
+    Tab:AddButton({Name = "Buy Barricade",Callback = function()
+        local args = {
+            [1] = game:GetService("ReplicatedStorage").Upgrades.Barricade,
+            [2] = game:GetService("ReplicatedStorage").Upgrades.Barricade.UPurchased
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.BuyStructure:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "BarbedWire",Callback = function()
+        local args = {
+            [1] = "Barricade",
+            [2] = "BarbedWire"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+
+    Tab:AddButton({Name = "ElectricWire",Callback = function()
+        local args = {
+            [1] = "Barricade",
+            [2] = "ElectricWire"
+        }
+
+    game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "RiggedWall",Callback = function()
+        local args = {
+            [1] = "Barricade",
+            [2] = "ExplosiveDeath"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+
+    Tab:AddButton({Name = "10FeetHigher",Callback = function()
+        local args = {
+            [1] = "Barricade",
+            [2] = "HealthUpgrade"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "ProtectiveBarrier",Callback = function()
+        local args = {
+            [1] = "Barricade",
+            [2] = "Resistance"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+    end    
+})
+
+local Tab = Window:MakeTab({Name = "Config",Icon = "rbxassetid://",PremiumOnly = false
+})
+    local Drown = game:GetService("Players"):GetChildren()
+	local PlayersTable = {}
+	for i, v in pairs(Drown) do
+		table.insert(PlayersTable, v.Name)
+	end
+	local oldList = PlayersTable
+	local newList = PlayersTable
+
+	local function getPlayerNames()
+		local players = game:GetService("Players"):GetPlayers()
+		local playerNames = {}
+		for _, player in ipairs(players) do
+			table.insert(playerNames, player.Name)
+		end
+		return playerNames
+	end
+	local oldList = getPlayerNames()
+
+
+	local Section = Tab:AddSection({
+        Name = "CON"
+    })
+
+	local Change = Tab:AddDropdown({Name = "Down Players",Default = "Players",Options = oldList,Callback = function(currentOption)
+			target = currentOption
+		end    
+	})
+
+	Tab:AddButton({Name = "Refresh List",Callback = function()
+		local Drown = game:GetService("Players"):GetChildren()
+		local PlayersTable = {}
+		
+		for i, v in pairs(Drown) do
+			table.insert(PlayersTable, v.Name)
+		end
+		
+		local oldList = PlayersTable
+		local newList = PlayersTable
+		Change:Refresh(oldList,true)
+	end    
+	})
+
+	
+	Tab:AddToggle({Name = "View Player",Default = false,Callback = function(isViewing)
+			if isViewing then
+				local selectedPlayer = target
+				if selectedPlayer then
+					local player = game.Players:FindFirstChild(selectedPlayer)
+					if player then
+						game.Workspace.CurrentCamera.CameraSubject = player.Character:FindFirstChild("Humanoid")
+					else
+					end
+				else
+				end
+			else
+				game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+			end
+		end
+	})
+	
+	local Section = Tab:AddSection({
+        Name = "Auto "
+    })
+
+
+	getgenv().MedkitHeal = false;
+		function MedkitHeal()
+		spawn(function()
+			while wait(2.5) do
+			if not getgenv().MedkitHeal then break end;
+			if game.Players.LocalPlayer.Character then
+
+			if game.Players.LocalPlayer.Charges:FindFirstChild("First Aid Kit").Amount.Value > 0 then
+				if game:GetService("Players").LocalPlayer.Character.Humanoid.Health >= 50  then 
+						
+			else
+				local args = {
+					[1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("First Aid Kit"),
+					[2] = game:GetService("Players")[target]
+				}
+				game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+
+			end
+				else
+			end
+			
+					end
+				end
+			end)
+		end
+
+		getgenv().BoosterKit = false;
+		function BoosterKit()
+		spawn(function()
+			while wait(2.5) do
+			if not getgenv().BoosterKit then break end;
+			if game.Players.LocalPlayer.Character then
+
+			if game.Players.LocalPlayer.Charges:FindFirstChild("Booster Kit").Amount.Value > 0 then
+				if game:GetService("Players").LocalPlayer.Character.Humanoid.Health >= 50  then 
+				
+			else
+				local args = {
+					[1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Booster Kit"),
+					[2] = game:GetService("Players")[target]
+				}
+				game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+			end
+				else
+			end
+		
+					end
+				end
+			end)
+		end
+
+		getgenv().Bandage = false;
+		function Bandage()
+		spawn(function()
+			while wait(2.5) do
+			if not getgenv().Bandage then break end;
+			if game.Players.LocalPlayer.Character then
+
+			if game.Players.LocalPlayer.Charges:FindFirstChild("Bandage").Amount.Value > 0 then
+				if game:GetService("Players").LocalPlayer.Character.Humanoid.Health >= 50  then 
+						
+			else
+				local args = {
+					[1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Bandage"),
+					[2] = game:GetService("Players")[target]
+				}
+				game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+
+			end
+				else
+			
+			end
+			
+					end
+				end
+			end)
+	end
+
+	local MedkitHeal =  Tab:AddToggle({Name = "First Aid Kit",Default = false,Callback = function(tool)
+		getgenv().MedkitHeal = tool
+		if tool then
+			MedkitHeal();
+		end	
+	end    
+	})
+
+	local BoosterKit =  Tab:AddToggle({Name = "BoosterKit",Default = false,Callback = function(tool)
+		getgenv().BoosterKit = tool
+		if tool then
+			BoosterKit();
+		end	
+	end    
+	})
+
+	local Bandage =  Tab:AddToggle({Name = "Bandage",Default = false,Callback = function(tool)
+		getgenv().Bandage = tool
+		if tool then
+			Bandage();
+		end	
+	end    
+	})
+
+
+	local Section = Tab:AddSection({
+        Name = "Manual Config"
+    })
+
+	Tab:AddButton({Name = "MedkitHeal",Callback = function()
+        local selectedPlayer = target
+		local args = {
+			[1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("First Aid Kit"),
+			[2] = game:GetService("Players")[target]
+		}
+		
+		game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+	end    
+	})
+	Tab:AddButton({Name = "BoosterKit",Callback = function()
+        local selectedPlayer = target
+
+		local args = {
+			[1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Booster Kit"),
+			[2] = game:GetService("Players")[target]
+		}
+		
+		game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+	end    
+	})
+	Tab:AddButton({Name = "Bandage",Callback = function()
+        local selectedPlayer = target
+		local args = {
+			[1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Bandage"),
+			[2] = game:GetService("Players")[target]
+		}
+		
+		game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+	end    
+})
+
+
+
+
+
+
+
+local Tab = Window:MakeTab({Name = "Consumables",Icon = "rbxassetid://",PremiumOnly = false
+})
+
+    local Section = Tab:AddSection({
+        Name = "First Aid Kit"
+    })
+
+    Tab:AddButton({Name = "First Aid Kit",Callback = function()
+        
+    end    
+    })
+    Tab:AddToggle({Name = "First Aid Kit",Default = false,Callback = function(v)
+        if v == true then
+
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+
+
+
+
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+    })
+
+    local Section = Tab:AddSection({
+        Name = "Booster Kit"
+    })
+
+    Tab:AddButton({Name = "Booster Kit",Callback = function()
+        
+    end    
+    })
+    Tab:AddToggle({Name = "Booster Kit",Default = false,Callback = function(v)
+        if v == true then
+
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+
+
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+    })
+
+
+    local Section = Tab:AddSection({
+        Name = "Bandage"
+    })
+
+    Tab:AddButton({Name = "Bandage",Callback = function()
+        
+    end    
+    })
+    Tab:AddToggle({Name = "Bandage",Default = false,Callback = function(v)
+        if v == true then
+
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+
+
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+    })
+
+
+    local Section = Tab:AddSection({
+        Name = "Experiment Drink"
+    })
+
+    Tab:AddButton({Name = "Buy Experiment Drink",Callback = function()
+
+
+        local args = {
+            [1] = "Experimental Drink"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.BuyWeapon:FireServer(unpack(args))
+
+    end    
+    })
+
+    Tab:AddButton({Name = "Max upgrade",Callback = function()
+
+
+        local args = {
+            [1] = "Experimental Drink"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.BuyWeapon:FireServer(unpack(args))
+
+    end    
+    })
+
+
+
+    Tab:AddToggle({Name = "Auto Experiment Drink",Default = false,Callback = function(v)
+        if v == true then
+
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+
+
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+    })
+
+
+    local Section = Tab:AddSection({
+        Name = "Energy Drink"
+    })
+
+    Tab:AddButton({Name = "Energy Drink",Callback = function()
+        
+    end    
+    })
+
+    Tab:AddToggle({Name = "Energy Drink",Default = false,Callback = function(v)
+        if v == true then
+
+            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+
+
+            end)
+        elseif v == false then
+            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+        end 
+    end    
+})
+
+
+
+
+
+
+
+
+
+local Tab = Window:MakeTab({Name = "AutoBuy ",Icon = "rbxassetid://",PremiumOnly = false
+})
+
+    Tab:AddParagraph("ScriptInfo: ","Readable")
+    local children = game.ReplicatedStorage.Tools:GetChildren()
+    for i= 1, #children do
+        Tab:AddButton({Name = children[i].Name ,Callback = function()
+
+        if not game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(children[i].Name) then 
+            local args = {
+                [1] = children[i].Name
+            }
+            
+            game:GetService("ReplicatedStorage").RemoteEvents.BuyWeapon:FireServer(unpack(args))
+            end
+            if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(children[i].Name) then 
+
+            local args = {
+                [1] = children[i].Name
+            }
+            
+            game:GetService("ReplicatedStorage").RemoteEvents.SellWeapon:FireServer(unpack(args))
+        end
+        end
+    
+    })
+end
+
+
+
+local Tab = Window:MakeTab({Name = "Aimbots ",Icon = "rbxassetid://",PremiumOnly = false
+})
+
+getgenv().Settings = {
+    Fov = 150,
+    MaxLockDistance = 58, 
+    Hitbox = "Head",
+    FovCircle = true,
+
+}
+
+
+local UIS = game:GetService("UserInputService")
+local camera = game.Workspace.CurrentCamera
+local localPlayer = game:GetService("Players").LocalPlayer
+local UIS = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character
+local Camera = workspace.CurrentCamera
+local Mouse = LocalPlayer:GetMouse()
+
+
+
+
+
+
+Tab:AddToggle({Name = "Aimbot ",Default = false,Callback = function(v)
+	if v == true then
+
+	_G.aim = true
+	getgenv().under = true 
+
+	local function getClosestZombie()
+		local closestZombie
+		local shortestDistance = getgenv().Settings.MaxLockDistance
+	
+		for _, zombie in pairs(game.Workspace.Zombies:GetChildren()) do
+			if zombie:FindFirstChild("Zombie") and zombie.Zombie.Health > 0 and zombie:FindFirstChild("Torso") and zombie:FindFirstChild("Head") then
+				local pos = camera:WorldToViewportPoint(zombie.Head.Position)
+				local magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(UIS:GetMouseLocation().X, UIS:GetMouseLocation().Y)).magnitude
+				if magnitude < shortestDistance then
+					closestZombie = zombie
+					shortestDistance = magnitude
+				end
+			end
+		end
+		return closestZombie
+	end
+	local function GetClosest(Fov)
+		local closestZombie = nil
+		local shortestDistance = math.huge
+		local fovRadius = Fov / 4 -- Calculate FOV radius
+		
+		for i, v in pairs(game.Workspace.Zombies:GetChildren()) do
+			if v:FindFirstChild("Zombie") and v.Zombie.Health > 0 and v:FindFirstChild("Torso") and v:FindFirstChild("Head") then
+				local ScreenPos, OnScreen = Camera:WorldToScreenPoint(v.Head.Position) -- Get zombie's head position
+				local distanceFromCenter = (Vector2.new(ScreenPos.X, ScreenPos.Y) - Vector2.new(Mouse.X, Mouse.Y)).Magnitude
+				local distanceToZombie = (v.Head.Position - LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+				
+				if distanceFromCenter < fovRadius and distanceToZombie <= getgenv().Settings.MaxLockDistance then
+					local ray = Ray.new(Camera.CFrame.Position, (v.Head.Position - Camera.CFrame.Position).unit * 300)
+					local part, position = game:GetService("Workspace"):FindPartOnRayWithIgnoreList(ray, {LocalPlayer.Character}, false, true)
+					
+					if part == nil or part:IsDescendantOf(v) then
+						if distanceToZombie < shortestDistance then
+							closestZombie = v
+							shortestDistance = distanceToZombie
+						end
+					end
+				end
+			end
+		end
+
+		return closestZombie
+	end
+
+	local function AimAt(Zombie)
+		if Zombie then
+		local targetPosition = Zombie.Head.Position
+		local direction = (targetPosition - Camera.CFrame.Position).unit
+		local lookAtCFrame = CFrame.new(Camera.CFrame.Position, targetPosition)
+		Camera.CFrame = lookAtCFrame
+		end
+		end
+
+		local Target
+		local CircleInline = Drawing.new("Circle")
+		local CircleOutline = Drawing.new("Circle")
+		RunService.Stepped:Connect(function()
+		CircleInline.Radius = getgenv().Settings.Fov
+		CircleInline.Thickness = 2
+		CircleInline.Position = Vector2.new(Mouse.X, Mouse.Y + 36)
+		CircleInline.Transparency = 1
+		CircleInline.Color = Color3.fromRGB(255, 255, 255)
+		CircleInline.Visible = getgenv().Settings.FovCircle
+		CircleInline.ZIndex = 2
+
+		CircleOutline.Radius = getgenv().Settings.Fov
+		CircleOutline.Thickness = 4
+		CircleOutline.Position = Vector2.new(Mouse.X, Mouse.Y + 36)
+		CircleOutline.Transparency = 1
+		CircleOutline.Color = Color3.new()
+		CircleOutline.Visible = getgenv().Settings.FovCircle
+		CircleOutline.ZIndex = 1
+
+		Target = GetClosest(getgenv().Settings.Fov)
+		if getgenv().under == true and not game.workspace.SellingCheapz.Humanoid.AutoRotate == true and game:GetService("Players").LocalPlayer.Character:FindFirstChildWhichIsA('Tool') then
+		AimAt(Target) 
+		end
+	end)
+
+	local function getClosestZombie2()
+		local closestZombie
+		local shortestDistance = getgenv().Settings.MaxLockDistance 
+		local camera = game.Workspace.CurrentCamera
+		local UIS = game:GetService("UserInputService")
+		
+		for _, zombie in pairs(game.Workspace.Zombies:GetChildren()) do
+			if zombie:FindFirstChild("Zombie") and zombie.Zombie.Health > 0 and zombie:FindFirstChild("Torso") and zombie:FindFirstChild("Head") then
+				local headPos = zombie.Head.Position
+				local ray = Ray.new(camera.CFrame.Position, (headPos - camera.CFrame.Position).unit * shortestDistance)
+				local part, hitPos = game.Workspace:FindPartOnRay(ray, camera)
+				
+				if part and part:IsDescendantOf(zombie) then
+					local pos = camera:WorldToViewportPoint(headPos)
+					local magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(UIS:GetMouseLocation().X, UIS:GetMouseLocation().Y)).magnitude
+					if magnitude < shortestDistance then
+						closestZombie = zombie
+						shortestDistance = magnitude
+					end
+				end
+			end
+		end
+		return closestZombie
+	end
+	
+	local success, err = pcall(function()
+	game:GetService("RunService").heartbeat:Connect(function()
+	if getgenv().under == true and _G.aim == true and game:GetService("Players").LocalPlayer.Character:FindFirstChildWhichIsA('Tool') then
+
+	--zoomout
+	if game.workspace.SellingCheapz.Humanoid.AutoRotate == true then
+
+		local closestZombie = getClosestZombie2()
+		if closestZombie then
+			local targetPosition = camera:WorldToScreenPoint(closestZombie.Head.Position)
+			mousemoveabs(targetPosition.X, targetPosition.Y)
+		end
+		wait()
+	else	
+		--zoomin
+
+		local closestZombie = getClosestZombie()
+		if closestZombie then
+			local targetPosition = camera:WorldToScreenPoint(closestZombie.Head.Position)
+			mousemoveabs(targetPosition.X, targetPosition.Y)
+		end
+		wait()
+
+
+	end
+
+	end
+	end)
+	end)
+
+	elseif v == false then
+	getgenv().under = false
+	_G.aim = false
+	end
+	end
+	})
+
+
+Tab:AddToggle({Name = "ShowFOV",Default = false,Callback = function(Boolean)
+getgenv().Settings.FovCircle = Boolean
+end
+})
+
+Tab:AddSlider({Name = "FOV Size",Min = 1,Max = 1000,Default = 50,Color = Color3.fromRGB(255,255,255),Increment = 1,ValueName = "Percent",Callback = function(state)
+getgenv().Settings.Fov = state
+end    
+})
+
+Tab:AddSlider({Name = "Max Distance",Min = 1,Max = 1000,Default = 50,Color = Color3.fromRGB(255,255,255),Increment = 1,ValueName = "Percent",Callback = function(state)
+getgenv().Settings.MaxLockDistance = state
+end    
+})
