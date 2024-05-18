@@ -95,7 +95,24 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
 
     local function getClosest()
         local closestPlayer = nil
-        local shortestDistance = 30
+        local shortestDistance = 25
+        
+        for i, v in pairs(game:GetService("Workspace").Zombies:GetChildren()) do
+            if v:FindFirstChild("Zombie") and v.Zombie.Health ~= 0 and v:FindFirstChild("Torso") and v:FindFirstChild("Head") then
+                local magnitude = (v.Torso.Position - localPlayer.Character.Torso.Position).magnitude
+    
+                if magnitude < shortestDistance then
+                    closestPlayer = v
+                    shortestDistance = magnitude
+                end
+            end
+        end
+    
+        return closestPlayer
+    end
+    local function getClosest2()
+        local closestPlayer = 12
+        local shortestDistance = 15
         
         for i, v in pairs(game:GetService("Workspace").Zombies:GetChildren()) do
             if v:FindFirstChild("Zombie") and v.Zombie.Health ~= 0 and v:FindFirstChild("Torso") and v:FindFirstChild("Head") then
@@ -111,10 +128,12 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
         return closestPlayer
     end
 
+
     Tab:AddToggle({Name = "Knife Aura",Default = false,Callback = function(v)
         if v == true then
 
             game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+                local success, err = pcall(function()
 				local args = {
 					[1] = "Melee",
 					[2] = {
@@ -124,8 +143,19 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
 						}
 					}
 				}
+				game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
+                local args = {
+					[1] = "Melee",
+					[2] = {
+						[1] = {
+							[1] = getClosest2():FindFirstChild("Torso"),
+							[2] = {}
+						}
+					}
+				}
 
 				game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
+            end)
             end)
         elseif v == false then
             game:GetService("RunService"):UnbindFromRenderStep("Stamina")
@@ -138,6 +168,7 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
 
             game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
                 spawn(function()
+                    local success, err = pcall(function()
                     local args = {
                         [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Baseball Bat"),
                         [2] = {
@@ -154,8 +185,25 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
                             ["ActiveAnimation"] = "Over"
                         }
                     }
-                    
                     game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
+                    local args = {
+                        [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Baseball Bat"),
+                        [2] = {
+                            [1] = {
+                                [1] = getClosest2():FindFirstChild("Torso"),
+                                [2] = {
+                                    ["Critical"] = true,
+                                    ["OverDamage"] = true,
+                                    ["ActiveAnimation"] = "Over"
+                                }
+                            }
+                        },
+                        [3] = {
+                            ["ActiveAnimation"] = "Over"
+                        }
+                    }
+                    game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
+                end)
                     end)
             end)
         elseif v == false then
@@ -169,6 +217,7 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
 
             game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
                 spawn(function()
+                    local success, err = pcall(function()
                     local args = {
                         [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Military Axe"),
                         [2] = {
@@ -185,9 +234,26 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
                             ["ActiveAnimation"] = "Over"
                         }
                     }
-                    
+                    game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
+                    local args = {
+                        [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Military Axe"),
+                        [2] = {
+                            [1] = {
+                                [1] = getClosest2():FindFirstChild("Head"),
+                                [2] = {
+                                    ["Critical"] = true,
+                                    ["OverDamage"] = true,
+                                    ["ActiveAnimation"] = "Over"
+                                }
+                            }
+                        },
+                        [3] = {
+                            ["ActiveAnimation"] = "Over"
+                        }
+                    }
                     game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
                     end)
+                end)
             end)
         elseif v == false then
             game:GetService("RunService"):UnbindFromRenderStep("Stamina")
@@ -199,7 +265,8 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
         if v == true then
 
             game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
-                spawn(function()
+                    local success, err = pcall(function()
+
                     local args = {
                         [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Katana"),
                         [2] = {
@@ -216,9 +283,26 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
                             ["ActiveAnimation"] = "Over"
                         }
                     }
-                    
+                    game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
+                    local args = {
+                        [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Katana"),
+                        [2] = {
+                            [1] = {
+                                [1] = getClosest2():FindFirstChild("Torso"),
+                                [2] = {
+                                    ["Critical"] = true,
+                                    ["OverDamage"] = true,
+                                    ["ActiveAnimation"] = "Over"
+                                }
+                            }
+                        },
+                        [3] = {
+                            ["ActiveAnimation"] = "Over"
+                        }
+                    }
                     game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
                     end)
+              
             end)
         elseif v == false then
             game:GetService("RunService"):UnbindFromRenderStep("Stamina")
@@ -230,41 +314,46 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
         if v == true then
 
             game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
-                spawn(function()
-                    local args = {
-                        [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Energy Sword"),
-                        [2] = {
-                            [1] = {
-                                [1] = getClosest():FindFirstChild("Head"),
+                    local success, err = pcall(function()
+
+                        local args = {
+                            [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Energy Sword"),
+                            [2] = {
+                                [1] = {
+                                    [1] = getClosest():FindFirstChild("HumanoidRootPart"),
+                                    [2] = {
+                                        ["Critical"] = false,
+                                        ["ActiveAnimation"] = "Left"
+                                    }
+                                },
                                 [2] = {
-                                    ["Critical"] = true,
-                                    ["ActiveAnimation"] = "Right",
-                                    ["AltDamage"] = true
+                                    [1] = getClosest():FindFirstChild("Right Arm"),
+                                    [2] = {
+                                        ["Critical"] = false,
+                                        ["ActiveAnimation"] = "Left"
+                                    }
+                                },
+                                [3] = {
+                                    [1] = getClosest():FindFirstChild("Head"),
+                                    [2] = {
+                                        ["Critical"] = true,
+                                        ["ActiveAnimation"] = "Left"
+                                    }
+                                },
+                                [4] = {
+                                    [1] = getClosest():FindFirstChild("Left Arm"),
+                                    [2] = {
+                                        ["Critical"] = false,
+                                        ["ActiveAnimation"] = "Left"
+                                    }
                                 }
+                            },
+                            [3] = {
+                                ["ActiveAnimation"] = "Left"
                             }
-                        },
-                        [3] = {
-                            ["ActiveAnimation"] = "Right"
                         }
-                    }
-                    game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
-                    local args = {
-                        [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Energy Sword"),
-                        [2] = {
-                            [1] = {
-                                [1] = getClosest():FindFirstChild("Head"),
-                                [2] = {
-                                    ["Critical"] = true,
-                                    ["ActiveAnimation"] = "Right",
-                                    ["AltDamage"] = true
-                                }
-                            }
-                        },
-                        [3] = {
-                            ["ActiveAnimation"] = "Right"
-                        }
-                    }
-                    game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
+                        game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
+
                     end)
             end)
         elseif v == false then
@@ -276,7 +365,7 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
 
 
 local Tab = Window:MakeTab({Name = "Main Setting",Icon = "rbxassetid://",PremiumOnly = false
- })
+})
 
     local Section = Tab:AddSection({
         Name = "Main Toggles"
@@ -287,6 +376,7 @@ local Tab = Window:MakeTab({Name = "Main Setting",Icon = "rbxassetid://",Premium
         if v == true then
 
             game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+                
                 game:GetService("ReplicatedStorage").RemoteFunctions.VoteSkip:InvokeServer()
 
             end)
@@ -382,16 +472,8 @@ local Tab = Window:MakeTab({Name = "Main Setting",Icon = "rbxassetid://",Premium
             game:GetService("RunService"):UnbindFromRenderStep("Stamina")
         end 
     end    
-    })
+})
     
-
-
-
-
-
-
-
-
 
 local Tab = Window:MakeTab({Name = "Autoup Toggles",Icon = "rbxassetid://",PremiumOnly = false
 })
