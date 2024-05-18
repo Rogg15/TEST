@@ -324,7 +324,6 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
 
             game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
                     local success, err = pcall(function()
-
                         local args = {
                             [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Energy Sword"),
                             [2] = {
@@ -332,7 +331,7 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
                                     [1] = getClosest():FindFirstChild("HumanoidRootPart"),
                                     [2] = {
                                         ["Critical"] = true,
-                                        ["ActiveAnimation"] = "Left"
+                                        ["ActiveAnimation"] = "Left",
                                         ["AltDamage"] = true
                                     }
                                 },
@@ -340,7 +339,7 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
                                     [1] = getClosest():FindFirstChild("Right Arm"),
                                     [2] = {
                                         ["Critical"] = true,
-                                        ["ActiveAnimation"] = "Left"
+                                        ["ActiveAnimation"] = "Left",
                                         ["AltDamage"] = true
                                     }
                                 },
@@ -348,7 +347,7 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
                                     [1] = getClosest():FindFirstChild("Head"),
                                     [2] = {
                                         ["Critical"] = true,
-                                        ["ActiveAnimation"] = "Left"
+                                        ["ActiveAnimation"] = "Left",
                                         ["AltDamage"] = true
                                     }
                                 },
@@ -356,7 +355,7 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
                                     [1] = getClosest():FindFirstChild("Left Arm"),
                                     [2] = {
                                         ["Critical"] = true,
-                                        ["ActiveAnimation"] = "Left"
+                                        ["ActiveAnimation"] = "Left",
                                         ["AltDamage"] = true
                                     }
                                 }
@@ -366,6 +365,7 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
                             }
                         }
                         game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
+
 
                     end)
             end)
