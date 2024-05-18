@@ -1,6 +1,3 @@
---test
-
-
 --main
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local Window = OrionLib:MakeWindow({Name = "Xscrobic Prime", HidePremium = false, SaveConfig = true, ConfigFolder = "Prime", IntroEnabled = false, IntroText = "sxxx"})
@@ -1220,7 +1217,7 @@ Tab:AddToggle({Name = "Aimbot ",Default = false,Callback = function(v)
 		CircleOutline.ZIndex = 1
 
 		Target = GetClosest(getgenv().Settings.Fov)
-		if getgenv().under == true and not game.workspace.SellingCheapz.Humanoid.AutoRotate == true and game:GetService("Players").LocalPlayer.Character:FindFirstChildWhichIsA('Tool') then
+		if getgenv().under == true and not game:GetService("Players").LocalPlayer.Character.Humanoid.AutoRotate == true and game:GetService("Players").LocalPlayer.Character:FindFirstChildWhichIsA('Tool') then
 		AimAt(Target) 
 		end
 	end)
@@ -1255,7 +1252,7 @@ Tab:AddToggle({Name = "Aimbot ",Default = false,Callback = function(v)
 	if getgenv().under == true and _G.aim == true and game:GetService("Players").LocalPlayer.Character:FindFirstChildWhichIsA('Tool') then
 
 	--zoomout
-	if game.workspace.SellingCheapz.Humanoid.AutoRotate == true then
+	if game:GetService("Players").LocalPlayer.Character.Humanoid.AutoRotate == true then
 
 		local closestZombie = getClosestZombie2()
 		if closestZombie then
