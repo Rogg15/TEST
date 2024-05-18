@@ -95,7 +95,7 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
 
     local function getClosest()
         local closestPlayer = nil
-        local shortestDistance = math.huge
+        local shortestDistance = 30
         
         for i, v in pairs(game:GetService("Workspace").Zombies:GetChildren()) do
             if v:FindFirstChild("Zombie") and v.Zombie.Health ~= 0 and v:FindFirstChild("Torso") and v:FindFirstChild("Head") then
@@ -247,7 +247,23 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
                             ["ActiveAnimation"] = "Right"
                         }
                     }
-                    
+                    game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
+                    local args = {
+                        [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Energy Sword"),
+                        [2] = {
+                            [1] = {
+                                [1] = getClosest():FindFirstChild("Head"),
+                                [2] = {
+                                    ["Critical"] = true,
+                                    ["ActiveAnimation"] = "Right",
+                                    ["AltDamage"] = true
+                                }
+                            }
+                        },
+                        [3] = {
+                            ["ActiveAnimation"] = "Right"
+                        }
+                    }
                     game:GetService("ReplicatedStorage").RemoteEvents.RemoteFireMelee:FireServer(unpack(args))
                     end)
             end)
@@ -796,19 +812,16 @@ local Tab = Window:MakeTab({Name = "Config",Icon = "rbxassetid://",PremiumOnly =
 			if not getgenv().MedkitHeal then break end;
 			if game.Players.LocalPlayer.Character then
 
-			if game.Players.LocalPlayer.Charges:FindFirstChild("First Aid Kit").Amount.Value > 0 then
-				if game:GetService("Players").LocalPlayer.Character.Humanoid.Health >= 50  then 
-						
-			else
-				local args = {
-					[1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("First Aid Kit"),
-					[2] = game:GetService("Players")[target]
-				}
-				game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+                if game.Players.LocalPlayer.Charges:FindFirstChild("First Aid Kit").Amount.Value >= 0 then
+                    if game:GetService("Players").LocalPlayer.Character.Humanoid.Health < 60  then 
+                        local args = {
+                            [1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("First Aid Kit"),
+                            [2] = game:GetService("Players")[target]
+                        }
+                        game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+                    end
+                end
 
-			end
-				else
-			end
 			
 					end
 				end
@@ -822,18 +835,15 @@ local Tab = Window:MakeTab({Name = "Config",Icon = "rbxassetid://",PremiumOnly =
 			if not getgenv().BoosterKit then break end;
 			if game.Players.LocalPlayer.Character then
 
-			if game.Players.LocalPlayer.Charges:FindFirstChild("Booster Kit").Amount.Value > 0 then
-				if game:GetService("Players").LocalPlayer.Character.Humanoid.Health >= 50  then 
-				
-			else
-				local args = {
-					[1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Booster Kit"),
-					[2] = game:GetService("Players")[target]
-				}
-				game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
-			end
-				else
-			end
+                if game.Players.LocalPlayer.Charges:FindFirstChild("Booster Kit").Amount.Value >= 0 then
+                    if game:GetService("Players").LocalPlayer.Character.Humanoid.Health < 60  then 
+                        local args = {
+                            [1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Booster Kit"),
+                            [2] = game:GetService("Players")[target]
+                        }
+                        game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+                    end
+                end
 		
 					end
 				end
@@ -847,20 +857,15 @@ local Tab = Window:MakeTab({Name = "Config",Icon = "rbxassetid://",PremiumOnly =
 			if not getgenv().Bandage then break end;
 			if game.Players.LocalPlayer.Character then
 
-			if game.Players.LocalPlayer.Charges:FindFirstChild("Bandage").Amount.Value > 0 then
-				if game:GetService("Players").LocalPlayer.Character.Humanoid.Health >= 50  then 
-						
-			else
-				local args = {
-					[1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Bandage"),
-					[2] = game:GetService("Players")[target]
-				}
-				game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
-
-			end
-				else
-			
-			end
+                if game.Players.LocalPlayer.Charges:FindFirstChild("Bandage").Amount.Value >= 0 then
+                    if game:GetService("Players").LocalPlayer.Character.Humanoid.Health < 60  then 
+                        local args = {
+                            [1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Bandage"),
+                            [2] = game:GetService("Players")[target]
+                        }
+                        game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+                    end
+                end
 			
 					end
 				end
@@ -898,33 +903,62 @@ local Tab = Window:MakeTab({Name = "Config",Icon = "rbxassetid://",PremiumOnly =
 
 	Tab:AddButton({Name = "MedkitHeal",Callback = function()
         local selectedPlayer = target
+    if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("First Aid Kit") then 
 		local args = {
 			[1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("First Aid Kit"),
 			[2] = game:GetService("Players")[target]
 		}
 		
 		game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+    else
+        local args = {
+			[1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("First Aid Kit"),
+			[2] = game:GetService("Players")[target]
+		}
+		
+		game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args)) 
+    end
+
 	end    
 	})
 	Tab:AddButton({Name = "BoosterKit",Callback = function()
         local selectedPlayer = target
-
+    if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Booster Kit") then 
 		local args = {
 			[1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Booster Kit"),
 			[2] = game:GetService("Players")[target]
 		}
 		
 		game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+    else
+        local args = {
+			[1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Booster Kit"),
+			[2] = game:GetService("Players")[target]
+		}
+		
+		game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+    end
 	end    
 	})
 	Tab:AddButton({Name = "Bandage",Callback = function()
         local selectedPlayer = target
+
+    if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Bandage") then 
 		local args = {
 			[1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Bandage"),
 			[2] = game:GetService("Players")[target]
 		}
 		
 		game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+    else
+		local args = {
+			[1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Bandage"),
+			[2] = game:GetService("Players")[target]
+		}
+		
+		game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+    end
+
 	end    
 })
 
@@ -941,136 +975,870 @@ local Tab = Window:MakeTab({Name = "Consumables",Icon = "rbxassetid://",PremiumO
         Name = "First Aid Kit"
     })
 
-    Tab:AddButton({Name = "First Aid Kit",Callback = function()
+    Tab:AddButton({Name = "Auto Buy",Callback = function()
+        local args = {
+            [1] = "First Aid Kit"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.BuyWeapon:FireServer(unpack(args))
         
     end    
     })
-    Tab:AddToggle({Name = "First Aid Kit",Default = false,Callback = function(v)
-        if v == true then
-
-            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
-
-
-
-
-            end)
-        elseif v == false then
-            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
-        end 
+    Tab:AddButton({Name = "Max Upgrade",Callback = function()
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "AnimationDuration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "ArmourHeal"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "ArmourHeal"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "Heal"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "Heal"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))     
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "Heal"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))     
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "Heal"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))     
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "HealOverTime"
+        }
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args)) 
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "MaxAmount"
+        }
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "StaminaHeal"
+        }
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))        
+        
     end    
     })
+	getgenv().Mk = false;
+		function Mk()
+		spawn(function()
+			while wait(2.5) do
+			if not getgenv().Mk then break end;
+			if game.Players.LocalPlayer.Character then
+
+                if game.Players.LocalPlayer.Charges:FindFirstChild("First Aid Kit").Amount.Value >= 0 then
+                    if game:GetService("Players").LocalPlayer.Character.Humanoid.Health < 60  then 
+                        local args = {
+                            [1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("First Aid Kit"),
+                            [2] = game:GetService("Players").LocalPlayer
+                        }
+                        game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+                    end
+                end
+
+					end
+				end
+			end)
+		end
+
+	local Mk =  Tab:AddToggle({Name = "First Aid Kit",Default = false,Callback = function(tool)
+		getgenv().Mk = tool
+		if tool then
+			Mk();
+		end	
+	end    
+	})
+
+
+    Tab:AddButton({Name = "Fast Hands",Callback = function()
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "AnimationDuration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "RepairKit",Callback = function()
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "ArmourHeal"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Firstest Aid",Callback = function()
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "Heal"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))        
+    end    
+    })
+    Tab:AddButton({Name = "Second Aid",Callback = function()
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "HealOverTime"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args)) 
+    end    
+    })
+    Tab:AddButton({Name = "Medic",Callback = function()
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "MaxAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Adrenaline Rush",Callback = function()
+        local args = {
+            [1] = "First Aid Kit",
+            [2] = "StaminaHeal"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))        
+    end    
+    })
+
 
     local Section = Tab:AddSection({
         Name = "Booster Kit"
     })
 
-    Tab:AddButton({Name = "Booster Kit",Callback = function()
+    Tab:AddButton({Name = "Auto Buy",Callback = function()
+
+        local args = {
+            [1] = "Booster Kit"
+        }
+
+        game:GetService("ReplicatedStorage").RemoteEvents.BuyWeapon:FireServer(unpack(args))
+
+    end    
+    })
+    Tab:AddButton({Name = "Max Upgrade",Callback = function()
+        local args = {
+            [1] = "Booster Kit",
+            [2] = "ChargeAmount"
+        }
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Booster Kit",
+            [2] = "DamageBoost"
+        }
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Booster Kit",
+            [2] = "DamageBoost"
+        }
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Booster Kit",
+            [2] = "Invincibility"
+        }
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Booster Kit",
+            [2] = "MaxAmount"
+        }
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Booster Kit",
+            [2] = "MaxAmount"
+        }
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Booster Kit",
+            [2] = "TemporaryHealth"
+        }
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Booster Kit",
+            [2] = "TemporaryHealth"
+        }
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+
+    end    
+    })
+
+    getgenv().BK = false;
+    function BK()
+    spawn(function()
+        while wait(1.5) do
+        if not getgenv().BK then break end;
+        if game.Players.LocalPlayer.Character then
+
+            if game.Players.LocalPlayer.Charges:FindFirstChild("Booster Kit").Amount.Value >= 0 then
+                if game:GetService("Players").LocalPlayer.Character.Humanoid.Health < 60  then 
+                    local args = {
+                        [1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Booster Kit"),
+                        [2] = game:GetService("Players").LocalPlayer
+                    }
+                    game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+                end
+            end
+    
+                end
+            end
+        end)
+    end
+
+	local BK =  Tab:AddToggle({Name = "BoosterKit",Default = false,Callback = function(tool)
+		getgenv().BK = tool
+		if tool then
+			BK();
+		end	
+	end    
+	})
+    
+
+    Tab:AddButton({Name = "Resupply",Callback = function()
+        local args = {
+            [1] = "Booster Kit",
+            [2] = "ChargeAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
         
     end    
     })
-    Tab:AddToggle({Name = "Booster Kit",Default = false,Callback = function(v)
-        if v == true then
-
-            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
-
-
-            end)
-        elseif v == false then
-            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
-        end 
+    Tab:AddButton({Name = "Damage Amplifier",Callback = function()
+        local args = {
+            [1] = "Booster Kit",
+            [2] = "DamageBoost"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        
     end    
     })
+    Tab:AddButton({Name = "Pain Suppressor",Callback = function()
+        local args = {
+            [1] = "Booster Kit",
+            [2] = "Invincibility"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        
+    end    
+    })
+    Tab:AddButton({Name = "Medic",Callback = function()
+        local args = {
+            [1] = "Booster Kit",
+            [2] = "MaxAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        
+    end    
+    })
+    Tab:AddButton({Name = "HealthBoost",Callback = function()
+        local args = {
+            [1] = "Booster Kit",
+            [2] = "TemporaryHealth"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        
+    end    
+    })
+
+
+
 
 
     local Section = Tab:AddSection({
         Name = "Bandage"
     })
 
-    Tab:AddButton({Name = "Bandage",Callback = function()
+    Tab:AddButton({Name = "Auto Buy",Callback = function()
+        local args = {
+            [1] = "Bandage"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.BuyWeapon:FireServer(unpack(args))        
+    end    
+    })
+    Tab:AddButton({Name = "Max Upgrade",Callback = function()
+        local args = {
+            [1] = "Bandage",
+            [2] = "AnimationDuration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Bandage",
+            [2] = "AnimationDuration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Bandage",
+            [2] = "AnimationDuration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Bandage",
+            [2] = "ChargeAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Bandage",
+            [2] = "ChargeAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Bandage",
+            [2] = "Heal"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Bandage",
+            [2] = "Heal"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Bandage",
+            [2] = "Heal"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Bandage",
+            [2] = "Heal"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Bandage",
+            [2] = "Heal2"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Bandage",
+            [2] = "HealOverTime"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Bandage",
+            [2] = "HealOverTime"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Bandage",
+            [2] = "MaxAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Bandage",
+            [2] = "MaxAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Bandage",
+            [2] = "MaxAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Bandage",
+            [2] = "StatusImmunity"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+             
+    end    
+    })
+
+    getgenv().BD = false;
+    function BD()
+    spawn(function()
+        while wait(1) do
+        if not getgenv().BD then break end;
+        if game.Players.LocalPlayer.Character then
+
+            if game.Players.LocalPlayer.Charges:FindFirstChild("Bandage").Amount.Value >= 0 then
+                if game:GetService("Players").LocalPlayer.Character.Humanoid.Health < 60  then 
+                    local args = {
+                        [1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Bandage"),
+                        [2] = game:GetService("Players").LocalPlayer
+                    }
+                    game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+                end
+            end
+    
+                end
+            end
+        end)
+    end
+
+	local BD =  Tab:AddToggle({Name = "Auto Use",Default = false,Callback = function(tool)
+		getgenv().BD = tool
+		if tool then
+			BD();
+		end	
+	end    
+	})
+
+    Tab:AddButton({Name = "FastHand",Callback = function()
+        local args = {
+            [1] = "Bandage",
+            [2] = "AnimationDuration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
         
     end    
     })
-    Tab:AddToggle({Name = "Bandage",Default = false,Callback = function(v)
-        if v == true then
-
-            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
-
-
-            end)
-        elseif v == false then
-            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
-        end 
+    Tab:AddButton({Name = "Resupply",Callback = function()
+        local args = {
+            [1] = "Bandage",
+            [2] = "ChargeAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
     end    
     })
+
+    Tab:AddButton({Name = "ThickBandage",Callback = function()
+        local args = {
+            [1] = "Bandage",
+            [2] = "Heal"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "DurableBandage",Callback = function()
+        local args = {
+            [1] = "Bandage",
+            [2] = "Heal2"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "SecondAid",Callback = function()
+        local args = {
+            [1] = "Bandage",
+            [2] = "HealOverTime"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Medic",Callback = function()
+        local args = {
+            [1] = "Bandage",
+            [2] = "MaxAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "CleanBandage",Callback = function()
+        local args = {
+            [1] = "Bandage",
+            [2] = "StatusImmunity"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+
 
 
     local Section = Tab:AddSection({
         Name = "Experiment Drink"
     })
 
-    Tab:AddButton({Name = "Buy Experiment Drink",Callback = function()
-
-
+    Tab:AddButton({Name = "Auto Buy",Callback = function()
         local args = {
             [1] = "Experimental Drink"
         }
         
         game:GetService("ReplicatedStorage").RemoteEvents.BuyWeapon:FireServer(unpack(args))
-
     end    
     })
-
-    Tab:AddButton({Name = "Max upgrade",Callback = function()
-
-
+    Tab:AddButton({Name = "Max Upgrade",Callback = function()
         local args = {
-            [1] = "Experimental Drink"
+            [1] = "Experimental Drink",
+            [2] = "AnimationDuration"
         }
         
-        game:GetService("ReplicatedStorage").RemoteEvents.BuyWeapon:FireServer(unpack(args))
-
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "AnimationDuration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "AnimationDuration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))    
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "ChargeAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "DrinkAttackSpeed"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "DrinkAttackSpeed"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "DrinkAttackSpeed"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "DrinkHeadDamage"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "DrinkResistance"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "DrinkResistance"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "DrinkResistance"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "DrinkResistance"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "Duration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "Duration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "MaxAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        
     end    
     })
 
 
+    getgenv().ED = false;
+    function ED()
+    spawn(function()
+        while wait(1) do
+        if not getgenv().ED then break end;
+        if game.Players.LocalPlayer.Character then
 
-    Tab:AddToggle({Name = "Auto Experiment Drink",Default = false,Callback = function(v)
-        if v == true then
+            if game.Players.LocalPlayer.Charges:FindFirstChild("Experimental Drink").Amount.Value >= 0 then
+                if game:GetService("Players").LocalPlayer.Character.Humanoid.Health < 60  then 
+                    local args = {
+                        [1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Experimental Drink"),
+                        [2] = game:GetService("Players").LocalPlayer
+                    }
+                    game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+                end
+            end
+    
+                end
+            end
+        end)
+    end
 
-            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+	local ED =  Tab:AddToggle({Name = "Auto Use",Default = false,Callback = function(tool)
+		getgenv().ED = tool
+		if tool then
+			ED();
+		end	
+	end    
+	})
 
-
-            end)
-        elseif v == false then
-            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
-        end 
+    Tab:AddButton({Name = "Speed Chug",Callback = function()
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "AnimationDuration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
     end    
     })
+    Tab:AddButton({Name = "Resupply",Callback = function()
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "ChargeAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Itchy Trigger",Callback = function()
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "DrinkAttackSpeed"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Brain Power",Callback = function()
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "DrinkHeadDamage"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Hardenen Skin",Callback = function()
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "DrinkResistance"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Concentrated Skin",Callback = function()
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "Duration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Experimental Addict",Callback = function()
+        local args = {
+            [1] = "Experimental Drink",
+            [2] = "MaxAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        
+    end    
+    })
+
 
 
     local Section = Tab:AddSection({
         Name = "Energy Drink"
     })
 
-    Tab:AddButton({Name = "Energy Drink",Callback = function()
+    Tab:AddButton({Name = "Auto Buy",Callback = function()
+        local args = {
+            [1] = "Energy Drink"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.BuyWeapon:FireServer(unpack(args))
         
     end    
     })
 
-    Tab:AddToggle({Name = "Energy Drink",Default = false,Callback = function(v)
-        if v == true then
+    Tab:AddButton({Name = "Max Upgrade",Callback = function()
+        local args = {
+            [1] = "Energy Drink",
+            [2] = "AnimationDuration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Energy Drink",
+            [2] = "ChargeAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Energy Drink",
+            [2] = "CriticalDuration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Energy Drink",
+            [2] = "MaxAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Energy Drink",
+            [2] = "Stamina"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Energy Drink",
+            [2] = "Stamina"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        local args = {
+            [1] = "Energy Drink",
+            [2] = "StaminaDuration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+        
+    end    
+    })
 
-            game:GetService("RunService"):BindToRenderStep("Stamina", 0 , function()
+    getgenv().EDD = false;
+    function EDD()
+    spawn(function()
+        while wait(1) do
+        if not getgenv().EDD then break end;
+        if game.Players.LocalPlayer.Character then
+
+            if game.Players.LocalPlayer.Charges:FindFirstChild("Energy Drink").Amount.Value >= 0 then
+                if game:GetService("Players").LocalPlayer.Character.Humanoid.Health < 60  then 
+                    local args = {
+                        [1] = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Energy Drink"),
+                        [2] = game:GetService("Players").LocalPlayer
+                    }
+                    game:GetService("ReplicatedStorage").RemoteFunctions.UseConsumable:InvokeServer(unpack(args))
+                end
+            end
+    
+                end
+            end
+        end)
+    end
+
+	local EDD =  Tab:AddToggle({Name = "Auto Use",Default = false,Callback = function(tool)
+		getgenv().EDD = tool
+		if tool then
+			EDD();
+		end	
+	end    
+	})
 
 
-            end)
-        elseif v == false then
-            game:GetService("RunService"):UnbindFromRenderStep("Stamina")
-        end 
+    Tab:AddButton({Name = "SpeedChug",Callback = function()
+        local args = {
+            [1] = "Energy Drink",
+            [2] = "AnimationDuration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Resupply",Callback = function()
+        local args = {
+            [1] = "Energy Drink",
+            [2] = "ChargeAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Perceptive Rush",Callback = function()
+        local args = {
+            [1] = "Energy Drink",
+            [2] = "CriticalDuration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))  
+    end    
+    })
+    Tab:AddButton({Name = "EnergyAddict",Callback = function()
+        local args = {
+            [1] = "Energy Drink",
+            [2] = "MaxAmount"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))   
+    end    
+    })
+    Tab:AddButton({Name = "Extra Energy",Callback = function()
+        local args = {
+            [1] = "Energy Drink",
+            [2] = "Stamina"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args))
+    end    
+    })
+    Tab:AddButton({Name = "Sugar Rush",Callback = function()
+        local args = {
+            [1] = "Energy Drink",
+            [2] = "StaminaDuration"
+        }
+        
+        game:GetService("ReplicatedStorage").RemoteEvents.UpgradeWeapon:FireServer(unpack(args)) 
     end    
 })
-
-
 
 
 
