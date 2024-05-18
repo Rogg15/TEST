@@ -331,15 +331,17 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
                                 [1] = {
                                     [1] = getClosest():FindFirstChild("HumanoidRootPart"),
                                     [2] = {
-                                        ["Critical"] = false,
+                                        ["Critical"] = true,
                                         ["ActiveAnimation"] = "Left"
+                                        ["AltDamage"] = true
                                     }
                                 },
                                 [2] = {
                                     [1] = getClosest():FindFirstChild("Right Arm"),
                                     [2] = {
-                                        ["Critical"] = false,
+                                        ["Critical"] = true,
                                         ["ActiveAnimation"] = "Left"
+                                        ["AltDamage"] = true
                                     }
                                 },
                                 [3] = {
@@ -347,13 +349,15 @@ local Tab = Window:MakeTab({Name = "Auras Toggles",Icon = "rbxassetid://",Premiu
                                     [2] = {
                                         ["Critical"] = true,
                                         ["ActiveAnimation"] = "Left"
+                                        ["AltDamage"] = true
                                     }
                                 },
                                 [4] = {
                                     [1] = getClosest():FindFirstChild("Left Arm"),
                                     [2] = {
-                                        ["Critical"] = false,
+                                        ["Critical"] = true,
                                         ["ActiveAnimation"] = "Left"
+                                        ["AltDamage"] = true
                                     }
                                 }
                             },
