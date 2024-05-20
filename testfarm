@@ -37,7 +37,12 @@ game:GetService("ReplicatedStorage").RemoteFunctions.CreatePrivate:InvokeServer(
 if game:GetService("Workspace"):FindFirstChild("Zombies") then
 
 
-game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+	if not game:IsLoaded() then
+		game.Loaded:Wait()
+	end
+	wait(5)
+
+print("Autofarm started")
 
 game:GetService("Players").LocalPlayer.Idled:connect(function()
     vu:Button2Down(Vector2.new(0,0),game.workspace.CurrentCamera.CFrame)
@@ -703,3 +708,46 @@ end
 
 	
 
+
+
+
+
+
+
+
+
+local args = {
+    [1] = game:GetService("Players").LocalPlayer.Character.Pistol,
+    [2] = workspace.Deployables.beor4.HeavySentry
+}
+
+game:GetService("ReplicatedStorage").RemoteFunctions.RemoteRefillSentry:InvokeServer(unpack(args))
+
+
+
+
+local getNil = function(name, class) for _, v in next, getnilinstances() do if v.ClassName == class and v.Name == name then return v end end end
+
+getNil("Game", "DataModel").Players.Zuangaming1.PlayerGui.ScreenGui.GameFrame.Interaction
+
+
+
+local args = {
+    [1] = Vector3.new(34.73508071899414, 6.0668816566467285, -361.9311218261719),
+    [2] = 1
+}
+
+game:GetService("ReplicatedStorage").RemoteEvents.PlayerTeleport:RemoteFunctions(unpack(args))
+
+
+
+
+
+
+rbxassetid://4035053244 --grass
+
+rbxassetid://4035053244
+
+rbxassetid://4035053244 --nosw
+
+rbxassetid://7019877881 -- water
