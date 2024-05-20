@@ -49,6 +49,13 @@ else
 		vu:Button2Up(Vector2.new(0,0),game.workspace.CurrentCamera.CFrame)
 	end)
 
+	task.spawn(function()
+		while task.wait(1) do		
+			game:GetService("ReplicatedStorage").RemoteFunctions.VoteSkip:InvokeServer()
+		end
+	end)
+
+
 	local function sniper()
 
 		local args = {
