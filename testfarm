@@ -1,0 +1,692 @@
+
+
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+game.Players.LocalPlayer.Character:WaitForChild("Head")
+
+local args = {
+	[1] = 5,
+	[2] = "Default"
+}
+
+game:GetService("ReplicatedStorage").RemoteFunctions.CreatePrivate:InvokeServer(unpack(args))	
+
+wait(2)
+
+local args = {
+	[1] = 5,
+	[2] = "Default"
+}
+
+game:GetService("ReplicatedStorage").RemoteFunctions.CreatePrivate:InvokeServer(unpack(args))	
+
+
+if game:GetService("Workspace"):FindFirstChild("Zombies") then
+game.Players.LocalPlayer.Character:WaitForChild("Head")
+
+game:GetService("Players").LocalPlayer.Idled:connect(function()
+    vu:Button2Down(Vector2.new(0,0),game.workspace.CurrentCamera.CFrame)
+    wait(0.11)
+    print("Edf")
+    vu:Button2Up(Vector2.new(0,0),game.workspace.CurrentCamera.CFrame)
+end)
+
+local function sniper()
+
+	local args = {
+		[1] = game:GetService("ReplicatedStorage").Upgrades.Sniper,
+		[2] = game:GetService("ReplicatedStorage").Upgrades.Sniper.UPurchased
+	}
+
+	game:GetService("ReplicatedStorage").RemoteEvents.BuyStructure:FireServer(unpack(args))
+	wait(2)
+	local args = {
+		[1] = "Sniper",
+		[2] = "Damage"
+	}
+	game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+
+	local args = {
+		[1] = "Sniper",
+		[2] = "ExtraSniper"
+	}
+	game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+
+	local args = {
+		[1] = "Sniper",
+		[2] = "NightVision"
+	}
+	game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+
+	local args = {
+		[1] = "Sniper",
+		[2] = "WitherDamage"
+	}
+	game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+
+end
+
+
+local function shop()
+	wait(2)
+	local args = {
+		[1] = "Shop",
+		[2] = "MoneyUpgrade"
+	}
+	game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+	local args = {
+		[1] = "Shop",
+		[2] = "MoneyUpgrade"
+	}
+	game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+	local args = {
+		[1] = "Shop",
+		[2] = "MoneyUpgrade"
+	}
+	game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+	local args = {
+		[1] = "Shop",
+		[2] = "MoneyUpgrade"
+	}
+	game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+	local args = {
+		[1] = "Shop",
+		[2] = "MoneyUpgrade"
+	}
+	game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+	local args = {
+		[1] = "Shop",
+		[2] = "MoneyUpgrade"
+	}
+	game:GetService("ReplicatedStorage").RemoteEvents.UpgradeStructurePlayer:FireServer(unpack(args))
+
+
+end
+
+local function start()
+--Forest
+if game.Workspace.Map.Geometry:FindFirstChild("Road") then 
+	print("Forest")
+
+
+	print("1nd Sentry")
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(-10.563238143920898, 0.8001812100410461, 135.3250274658203) * CFrame.Angles(3.141592502593994, -0.07274708151817322, 3.141592502593994),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(-1.9145634174346924, 0.5001811981201172, 145.734130859375) * CFrame.Angles(-3.1415927410125732, 0.06798973679542542, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	sniper()
+	shop()
+
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("2nd Sentry")
+
+
+	--2nd
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(-11.216113090515137, 0.8001812100410461, 107.08349609375) * CFrame.Angles(-3.1415927410125732, 0.05847517028450966, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("3nd Sentry")
+
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(-0.11771178245544434, 0.8001812100410461, -268.50006103515625) * CFrame.Angles(-0, 0.05901091545820236, -0),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+
+
+	--left
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(-63.51228713989258, 0.7001791000366211, -233.17507934570312) * CFrame.Angles(-0, 1.5591182708740234, -0),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	--right
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(68.9134521484375, 0.7100000381469727, -233.54849243164062) * CFrame.Angles(-0, -1.5620616674423218, -0),
+		[3] = false
+	}
+
+game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+
+elseif game.workspace.Map.Geometry:FindFirstChild("Canyon") then
+	print("Canyon")
+
+--Canyon
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(-5.249628067016602, 8.800000190734863, 144.0590362548828) * CFrame.Angles(-3.1415927410125732, 0.05780211463570595, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(-28.791194915771484, 8.5, 141.15672302246094) * CFrame.Angles(-3.1415927410125732, 0.12254014611244202, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	sniper()
+	shop()
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("2nd Sentry")
+
+	--2nd sentry
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(-2.9026541709899902, 7.220892429351807, 92.74249267578125) * CFrame.Angles(-0, 1.1560263633728027, -0),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(25.762659072875977, -15.5, 147.80865478515625) * CFrame.Angles(-3.1415927410125732, 0.06056324020028114, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("3nd Sentry")
+
+	--3rd sentry
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(25.26421356201172, -15.199999809265137, 117.65774536132812) * CFrame.Angles(-0, -0.9050830006599426, -0),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(26.13029670715332, -15.5, 141.75706481933594) * CFrame.Angles(-3.1415927410125732, -0.011878816410899162, -3.1415927410125732),
+		[3] = false
+	}
+
+game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+elseif game.workspace.Map.Geometry:FindFirstChild("IceCave") then
+	print("Artic")
+
+--Artic
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(-0.37072229385375977, -21.25135612487793, -38.74317169189453) * CFrame.Angles(-2.944197177886963, 0.44207996129989624, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(0.12798187136650085, -23.599403381347656, -28.50295066833496) * CFrame.Angles(-2.944197177886963, 0.2257099151611328, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	sniper()
+	shop()
+
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("2nd Sentry")
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(5.503137111663818, -19.19999885559082, -76.42828369140625) * CFrame.Angles(-3.1415927410125732, 1.256285309791565, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(-71.52532196044922, 0.5, -160.11026000976562) * CFrame.Angles(-3.1415927410125732, 0.3007728159427643, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("3nd Sentry")
+
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(-70.8573989868164, 0.800000011920929, -200.7277374267578) * CFrame.Angles(-3.1415927410125732, 0.43987002968788147, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(0.9425630569458008, -19.5, -121.1422119140625) * CFrame.Angles(-3.1415927410125732, -0.3320640027523041, -3.1415927410125732),
+		[3] = false
+	}
+
+game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+elseif game.workspace.Map.Geometry:FindFirstChild("Cityscape") then
+	print("City")
+
+--city 
+
+
+	print("1nd Sentry")
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(7.767692565917969, 0.8101604580879211, 40.13652801513672) * CFrame.Angles(-3.1415927410125732, 0.033738523721694946, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(11.36955451965332, 0.5101604461669922, 27.71273422241211) * CFrame.Angles(-3.1415927410125732, -0.06359490007162094, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	sniper()
+	shop()
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("2nd Sentry")
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(-0.501349925994873, 0.8101604580879211, -187.58636474609375) * CFrame.Angles(-0, -0.08985692262649536, -0),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(1.4852609634399414, 0.4199795722961426, -203.38748168945312) * CFrame.Angles(-3.1415927410125732, 0.08135835081338882, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+
+
+
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("3nd Sentry")
+
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(1.0983304977416992, 0.8101604580879211, -292.65802001953125) * CFrame.Angles(-0, 0.007308668456971645, -0),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(29.391788482666016, 0.5101604461669922, -291.5233459472656) * CFrame.Angles(-3.1415927410125732, 1.2282012701034546, -3.1415927410125732),
+		[3] = false
+	}
+
+game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+elseif game.workspace.Map.Geometry:FindFirstChild("CaveLower") then
+	print("Swamp")
+	
+--swamp
+
+	print("1nd Sentry")
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(0.632666826248169, 0.800000011920929, -221.2440643310547) * CFrame.Angles(-0, -1.3301204442977905, -0),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(2.3775668144226074, 0.5, -201.12698364257812) * CFrame.Angles(-3.1415927410125732, 0.1588374674320221, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	sniper()
+	shop()
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("2nd Sentry")
+
+
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(32.42478561401367, 0.800000011920929, -254.5116424560547) * CFrame.Angles(-3.1415927410125732, -0.32444724440574646, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(51.132198333740234, 0.5, -223.68280029296875) * CFrame.Angles(-3.1415927410125732, -0.4807906746864319, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("3nd Sentry")
+
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(51.132198333740234, 0.5, -223.68280029296875) * CFrame.Angles(-3.1415927410125732, -0.4807906746864319, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(51.132198333740234, 0.5, -223.68280029296875) * CFrame.Angles(-3.1415927410125732, -0.4807906746864319, -3.1415927410125732),
+		[3] = false
+	}
+
+game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+elseif game.workspace.Map.Geometry:FindFirstChild("BeachSide") then
+	print("Lake")
+
+--Lake
+
+	print("1nd Sentry")
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(-0.17127513885498047, 0.800000011920929, 145.0171356201172) * CFrame.Angles(-3.1415927410125732, -0.34188780188560486, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(0.14574456214904785, 0.5, 139.7971649169922) * CFrame.Angles(-3.1415927410125732, -0.014351693913340569, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	sniper()
+	shop()
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("2nd Sentry")
+
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(87.76486206054688, -4.367687702178955, 194.42649841308594) * CFrame.Angles(-1.8319485187530518, -1.4195059537887573, -1.829097032546997),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(81.1142807006836, -3.688143730163574, 192.87158203125) * CFrame.Angles(-2.147183895111084, -1.3969025611877441, -2.14026141166687),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("3nd Sentry")
+
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(-3.351522445678711, 0.800000011920929, -232.09844970703125) * CFrame.Angles(-3.1415927410125732, 1.2618274688720703, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(-3.3987865447998047, 0.5, -227.30804443359375) * CFrame.Angles(-3.1415927410125732, 0.5663694143295288, -3.1415927410125732),
+		[3] = false
+	}
+
+game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+elseif game.workspace.Map.Geometry:FindFirstChild("Mid") then
+	print("Underground")
+
+--Underground
+
+	print("1nd Sentry")
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(-2.521212577819824, -42.88844680786133, 107.535888671875) * CFrame.Angles(-2.952080249786377, -0.14319995045661926, 3.1292564868927),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(-1.842390537261963, -44.74386978149414, 117.09658813476562) * CFrame.Angles(-3.101637363433838, -0.19574196636676788, -3.1415762901306152),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	sniper()
+	shop()
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("2nd Sentry")
+
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(-3.873265266418457, -13.7035493850708, 61.603145599365234) * CFrame.Angles(3.100273847579956, 0.4028623402118683, -3.1162350177764893),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(-6.805490493774414, -35.6771354675293, 68.470703125) * CFrame.Angles(-2.9501709938049316, 0.012178885750472546, 3.1293818950653076),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+
+
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("3nd Sentry")
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(-1.4777488708496094, 0.8800229430198669, -287.55377197265625) * CFrame.Angles(-3.1415927410125732, 0.032929807901382446, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(-1.584005355834961, 0.5800228118896484, -291.94439697265625) * CFrame.Angles(-3.1415927410125732, 0.030886085703969002, -3.1415927410125732),
+		[3] = false
+	}
+
+game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+elseif game.workspace.Map.Geometry:FindFirstChild("Benches") then
+	print("Subway")
+
+--Subway
+
+
+	print("1nd Sentry")
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(0.23276886343955994, -9.199984550476074, -10.698333740234375) * CFrame.Angles(-3.1415927410125732, 0.38205066323280334, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(0.13092923164367676, -9.499984741210938, -6.5313873291015625) * CFrame.Angles(-3.1415927410125732, 0.054285675287246704, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	sniper()
+	shop()
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("2nd Sentry")
+
+
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(-14.763527870178223, 0.8000152707099915, -281.4716796875) * CFrame.Angles(-3.1415927410125732, 1.5253350734710693, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(-10.839351654052734, 0.5000152587890625, -283.9830017089844) * CFrame.Angles(-3.1415927410125732, 0.9695123434066772, -3.1415927410125732),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+
+	repeat wait() until game.Players.LocalPlayer.Charges["Sentry Gun"].Amount.Value == 1
+	print("3nd Sentry")
+
+	local args = {
+		[1] = "Sentry Gun",
+		[2] = CFrame.new(24.872529983520508, 0.8000152707099915, -241.97789001464844) * CFrame.Angles(-0, -1.4671283960342407, -0),
+		[3] = false
+	}
+
+	game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+	local args = {
+		[1] = "Floodlight",
+		[2] = CFrame.new(28.064565658569336, 0.5000152587890625, -248.70108032226562) * CFrame.Angles(-3.1415927410125732, 0.6907667517662048, -3.1415927410125732),
+		[3] = false
+	}
+
+game:GetService("ReplicatedStorage").RemoteFunctions.CreateDeployable:InvokeServer(unpack(args))
+
+
+end
+
+end
+
+
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+game.Players.LocalPlayer.CharacterAdded:Wait()
+wait(2)
+
+start()
+
+
+game.Players.LocalPlayer.CharacterAdded:Connect(function()
+	local success, err = pcall(function()
+
+		game.Players.LocalPlayer.CharacterAdded:Wait()
+		wait(2)
+		
+		start()
+
+	end)
+end)
+
+
+
+
+end
+
+
+	
+
+
