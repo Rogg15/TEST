@@ -3,17 +3,29 @@
 if not game:IsLoaded() then
     game.Loaded:Wait()
 end
-game.Players.LocalPlayer.Character:WaitForChild("Head")
+
+
+
+wait(5)
+
 print("Starting")
+
+
+
 local args = {
 	[1] = 5,
 	[2] = "Default"
 }
 
 game:GetService("ReplicatedStorage").RemoteFunctions.CreatePrivate:InvokeServer(unpack(args))	
+wait(5)
+local args = {
+	[1] = 5,
+	[2] = "Default"
+}
 
-wait(2)
-
+game:GetService("ReplicatedStorage").RemoteFunctions.CreatePrivate:InvokeServer(unpack(args))	
+wait(5)
 local args = {
 	[1] = 5,
 	[2] = "Default"
@@ -23,7 +35,9 @@ game:GetService("ReplicatedStorage").RemoteFunctions.CreatePrivate:InvokeServer(
 
 
 if game:GetService("Workspace"):FindFirstChild("Zombies") then
-game.Players.LocalPlayer.Character:WaitForChild("Head")
+
+
+game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 
 game:GetService("Players").LocalPlayer.Idled:connect(function()
     vu:Button2Down(Vector2.new(0,0),game.workspace.CurrentCamera.CFrame)
@@ -688,5 +702,4 @@ end
 
 
 	
-
 
